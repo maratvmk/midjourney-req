@@ -1,5 +1,5 @@
 const express = require('express');
-const images = require('./app.js')
+const images = require('./images.js')
 
 const app = express();
 const port = 3000;
