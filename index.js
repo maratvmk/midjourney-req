@@ -6,7 +6,8 @@ const port = 3000;
 
 app.get('/images', async(req, res) => {
     console.log(req.query)
-    const image = await images.getImages(req.query.content);
+    const { token, channel, content } = req.query;
+    const image = await images.getImages(token, channel, content);
     return res.json({ image });
 });
 

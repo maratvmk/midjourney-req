@@ -1,13 +1,9 @@
-require('dotenv/config');
 const axios = require('axios');
 
-const url = process.env.SEARCH_URL;
-const headers = {
-    'Authorization': process.env.AUTH_TOKEN
-};
-
-async function getImages(content, offset = 0) {
+async function getImages(token, channel, content, offset = 0) {
     const PAGE_LENGTH = 25;
+    const headers = { authorization: token };
+    const url = `https://discord.com/api/v9/guilds/${channel}/messages/search`
 
     return axios.get(url, { params: { content, offset }, headers })
         .then(response => {
@@ -23,9 +19,11 @@ async function getImages(content, offset = 0) {
             }
             else {
                 if (offset < response.data.total_results) {
-                    return new Promise(resolve => setTimeout(
-                            resolve(getImages(content, offset + PAGE_LENGTH))
-                        , 1000));
+                    return new Promise(resolve => 
+                        setTimeout(
+                            resolve(getImages(token, channel, content, offset + PAGE_LENGTH))
+                        , 1000)
+                    );
                 }
                 else {
                     return;
